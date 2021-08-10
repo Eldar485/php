@@ -1,0 +1,20 @@
+{
+    "name": "a/a",
+    "description": "a",
+    "autoload": {
+        "psr-4": {
+            "A\\A\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "a",
+            "email": "a@a.a"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "dev-master"
+    }
+}
