@@ -5,7 +5,7 @@
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '38b78793a58a7e18c580b0eb84154ff9c3816bc3',
+        'reference' => 'a10705d63d33b48b0c435e6f78ccfc3a668ea944',
         'name' => 'eldar/feedback-app',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '38b78793a58a7e18c580b0eb84154ff9c3816bc3',
+            'reference' => 'a10705d63d33b48b0c435e6f78ccfc3a668ea944',
             'dev_requirement' => false,
         ),
         'fig/http-message-util' => array(
