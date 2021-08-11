@@ -1,5 +1,5 @@
 <?php
-//include_once('config.php');
+include_once('config.php');
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -20,22 +20,21 @@ function getFeedback($id){
 	}
 }
 
-function getAllFeedbacks(){
-	$page = 0;
+function getAllFeedbacks($page){
+	$page = 2;
 	$db = new PDO('sqlite:test.db');
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	if($stmt = $db->prepare('SELECT * FROM feedbacks ORDER BY id OFFSET 20*:page ROWS FETCH NEXT 20 ROWS ONLY')){
+	if($stmt = $db->prepare('SELECT * FROM feedbacks ORDER BY id LIMIT 20 OFFSET 20*:page')){
 		$stmt->bindParam(':page', $page);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		var_dump($rows);
 		$db = null;
 	}
 }
 
 $app = AppFactory::create();
 $app->get('/feedback:id', getFeedback($id));
-$app->get('/', getAllFeedbacks());
+$app->get('/', getAllFeedbacks($page));
 $app->run();
 
 
