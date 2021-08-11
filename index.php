@@ -1,5 +1,4 @@
 <?php
-include_once('config.php');
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
@@ -7,7 +6,8 @@ use Slim\Factory\AppFactory;
 require_once __DIR__ . '/vendor/autoload.php';
 
 function getFeedback($id){
-	$db = new PDO('sqlite:test.db');
+	include_once('config.php');
+	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	if($stmt = $db->prepare('SELECT * FROM feedbacks WHERE id = :id')){
 		$stmt->bindParam(':id', $id);
@@ -21,20 +21,29 @@ function getFeedback($id){
 }
 
 function getAllFeedbacks($page){
-	$page = 2;
-	$db = new PDO('sqlite:test.db');
+	include_once('config.php');
+	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	if($stmt = $db->prepare('SELECT * FROM feedbacks ORDER BY id LIMIT 20 OFFSET 20*:page')){
 		$stmt->bindParam(':page', $page);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		echo count($rows);
 		$db = null;
 	}
 }
 
 $app = AppFactory::create();
-$app->get('/feedback:id', getFeedback($id));
-$app->get('/', getAllFeedbacks($page));
+$app->get('/feedback{id}', function(Request $request, Response $response, array $args){
+	$id = $args['id'];
+	getFeedback($id);
+	return $response;
+});
+$app->get('/{page}', function(Request $request, Response $response, array $args){
+	$page = $args['page'];
+	getAllFeedbacks($page);
+	return $response;
+});
 $app->run();
 
 
