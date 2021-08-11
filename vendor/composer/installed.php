@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
-        'name' => 'a/a',
+        'reference' => '38b78793a58a7e18c580b0eb84154ff9c3816bc3',
+        'name' => 'eldar/feedback-app',
         'dev' => true,
     ),
     'versions' => array(
-        'a/a' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+        'eldar/feedback-app' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => '38b78793a58a7e18c580b0eb84154ff9c3816bc3',
             'dev_requirement' => false,
         ),
         'fig/http-message-util' => array(

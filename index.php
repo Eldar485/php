@@ -1,16 +1,19 @@
 <?php
-	use Psr\Http\Message\ResponseInterface as Response;
-	use Psr\Http\Message\ServerRequestInterface as Request;
-	use Slim\Factory\AppFactory;
-	
-	require_once __DIR__ . '/vendor/autoload.php';
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Factory\AppFactory;
 
-	$app = AppFactory::create();
+require_once __DIR__ . '/vendor/autoload.php';
 
-	$app->get('/', function (Request $request, Response $response, $args) {
-    	$response->getBody()->write("Hello world!");
-    	return $response;
-	});
+$app = AppFactory::create();
 
-	$app->run();
-	
+$app->get('/', function (Request $request, Response $response, $args) {
+	$response->getBody()->write("Hello world!");
+	getFeedback();
+	return $response;
+});
+
+$app->run();
+
+
+

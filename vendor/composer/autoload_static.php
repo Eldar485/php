@@ -31,10 +31,6 @@ class ComposerStaticInitf1ad091cf60572cdbdba338d475f1718
             'Fig\\Http\\Message\\' => 17,
             'FastRoute\\' => 10,
         ),
-        'A' => 
-        array (
-            'A\\A\\' => 4,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -76,10 +72,10 @@ class ComposerStaticInitf1ad091cf60572cdbdba338d475f1718
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
         ),
-        'A\\A\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/../..' . '/src',
     );
 
     public static $classMap = array (
@@ -95,6 +91,7 @@ class ComposerStaticInitf1ad091cf60572cdbdba338d475f1718
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitf1ad091cf60572cdbdba338d475f1718::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitf1ad091cf60572cdbdba338d475f1718::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitf1ad091cf60572cdbdba338d475f1718::$fallbackDirsPsr4;
             $loader->classMap = ComposerStaticInitf1ad091cf60572cdbdba338d475f1718::$classMap;
 
         }, null, ClassLoader::class);
