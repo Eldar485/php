@@ -1,1 +1,0 @@
-INSERT INTO feedbacks (text, date) VALUES ('ну такое', '2021-06-11 17:00:34.333');
