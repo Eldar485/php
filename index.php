@@ -25,7 +25,7 @@ function getAllFeedbacks(int $page): array{
 	include_once('config.php');
 	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	if($stmt = $db->prepare('SELECT * FROM feedbacks ORDER BY id LIMIT 20 OFFSET 20*:page')){
+	if($stmt = $db->prepare('SELECT * FROM feedbacks ORDER BY id LIMIT 2 OFFSET 2*:page')){
 		$stmt->bindParam(':page', $page);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -40,13 +40,14 @@ function getAllFeedbacks(int $page): array{
 $app = AppFactory::create();
 $app->get('/api/feedbacks/{id}', function(Request $request, Response $response, array $args){
 	$id = $args['id'];
-	$arr = getFeedback((int)$id);
-	$response->getBody()->write(implode(',', $arr));
+	$json = json_encode(getFeedback((int)$id));
+	$response->getBody()->write($json);
 	return $response;
 });
-$app->get('/api/feedbacksA/', function(Request $request, Response $response, array $args){
-	$page = $_GET['page'];
-	$json = json_encode(getAllFeedbacks((int)$page));
+$app->get('/api/feedbacksA/', function(Request $request, Response $response, $page){
+	$page = $request->getQueryParams();
+	$json = json_encode(getAllFeedbacks((int)$page['page']));
+	$response = $response->withHeader('Content-type', 'application/json');
 	$response->getBody()->write($json);
 	return $response;
 });
