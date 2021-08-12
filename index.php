@@ -46,7 +46,6 @@ $app->get('/api/feedbacks/{id}', function(Request $request, Response $response, 
 });
 $app->get('/api/feedbacksA/', function(Request $request, Response $response, array $args){
 	$page = $_GET['page'];
-	$a =getAllFeedbacks((int)$page);
 	$json = json_encode(getAllFeedbacks((int)$page));
 	$response->getBody()->write($json);
 	return $response;
