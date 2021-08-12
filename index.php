@@ -38,7 +38,7 @@ function getAllFeedbacks(int $page): array{
 }
 
 $app = AppFactory::create();
-$app->get('/api/feedbacks/{id}', function(Request $request, Response $response, array $args){
+$app->get('/api/feedbacks/{id}/', function(Request $request, Response $response, array $args){
 	$id = $args['id'];
 	$json = json_encode(getFeedback((int)$id));
 	$response = $response->withHeader('Content-type', 'application/json');
