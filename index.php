@@ -41,10 +41,11 @@ $app = AppFactory::create();
 $app->get('/api/feedbacks/{id}', function(Request $request, Response $response, array $args){
 	$id = $args['id'];
 	$json = json_encode(getFeedback((int)$id));
+	$response = $response->withHeader('Content-type', 'application/json');
 	$response->getBody()->write($json);
 	return $response;
 });
-$app->get('/api/feedbacksA/', function(Request $request, Response $response, $page){
+$app->get('/api/feedbacks/', function(Request $request, Response $response, $page){
 	$page = $request->getQueryParams();
 	$json = json_encode(getAllFeedbacks((int)$page['page']));
 	$response = $response->withHeader('Content-type', 'application/json');
