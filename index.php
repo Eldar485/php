@@ -12,16 +12,16 @@ function getFeedback(int $id): ?array{
 	if($stmt = $db->prepare('SELECT * FROM feedbacks WHERE id = :id')){
 		$stmt->bindParam(':id', $id);
 		$stmt->execute();
-		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$rows = $stmt->fetch(PDO::FETCH_ASSOC);
 		$db = null;
 		return $rows;
 	}
 	else{
-		return 0;
+		return NULL;
 	}
 }
 
-function getAllFeedbacks(int $page): ?array{
+function getAllFeedbacks(int $page): array{
 	include_once('config.php');
 	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -38,14 +38,17 @@ function getAllFeedbacks(int $page): ?array{
 }
 
 $app = AppFactory::create();
-$app->get('/feedback{id}', function(Request $request, Response $response, array $args){
+$app->get('/api/feedbacks/{id}', function(Request $request, Response $response, array $args){
 	$id = $args['id'];
-	getFeedback((int)$id);
+	$arr = getFeedback((int)$id);
+	$response->getBody()->write(implode(',', $arr));
 	return $response;
 });
-$app->get('/feedbacksAll{page}', function(Request $request, Response $response, array $args){
-	$page = $args['page'];
-	getAllFeedbacks((int)$page);
+$app->get('/api/feedbacksA/', function(Request $request, Response $response, array $args){
+	$page = $_GET['page'];
+	$a =getAllFeedbacks((int)$page);
+	$json = json_encode(getAllFeedbacks((int)$page));
+	$response->getBody()->write($json);
 	return $response;
 });
 $app->run();
