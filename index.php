@@ -14,9 +14,7 @@ function getFeedback($id){
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$db = null;
-	}
-	else{
-		echo "Error";
+		return $rows;
 	}
 }
 
@@ -28,8 +26,8 @@ function getAllFeedbacks($page){
 		$stmt->bindParam(':page', $page);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		echo count($rows);
 		$db = null;
+		return $rows;
 	}
 }
 
