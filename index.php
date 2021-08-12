@@ -5,7 +5,7 @@ use Slim\Factory\AppFactory;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-function getFeedback($id){
+function getFeedback(int $id): ?array{
 	include_once('config.php');
 	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -17,11 +17,11 @@ function getFeedback($id){
 		return $rows;
 	}
 	else{
-		echo "Error";
+		return 0;
 	}
 }
 
-function getAllFeedbacks($page){
+function getAllFeedbacks(int $page): ?array{
 	include_once('config.php');
 	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -29,24 +29,23 @@ function getAllFeedbacks($page){
 		$stmt->bindParam(':page', $page);
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		echo count();
 		$db = null;
 		return $rows;
 	}
 	else{
-		echo "Error";
+		return array();
 	}
 }
 
 $app = AppFactory::create();
 $app->get('/feedback{id}', function(Request $request, Response $response, array $args){
 	$id = $args['id'];
-	getFeedback($id);
+	getFeedback((int)$id);
 	return $response;
 });
-$app->get('/{page}', function(Request $request, Response $response, array $args){
+$app->get('/feedbacksAll{page}', function(Request $request, Response $response, array $args){
 	$page = $args['page'];
-	getAllFeedbacks($page);
+	getAllFeedbacks((int)$page);
 	return $response;
 });
 $app->run();
