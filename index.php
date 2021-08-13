@@ -37,14 +37,13 @@ function getAllFeedbacks(int $page): array{
 	}
 }
 
-function addFeedback(string $json){
+function addFeedback(array $arr){
 	include_once('config.php');
 	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	if($stmt = $db->prepare('INSERT INTO feedbacks (text, date) VALUES (:text, :date)')){
-		$obj = json_decode($json);
-		$stmt->bindParam(':text', $obj['text']);
-		$stmt->bindParam(':date', $obj['date']);
+		$stmt->bindParam(':text', $arr['text']);
+		$stmt->bindParam(':date', $arr['date']);
 		$stmt->execute();
 		$db = null;
 	}
@@ -57,7 +56,7 @@ function deleteFeedback(int $id){
 	include_once('config.php');
 	$db = new PDO('sqlite:'.$bd_way);
 	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	if($stmt = $db->prepare('DELETE * FROM feedbacks WHERE id = :id')){
+	if($stmt = $db->prepare('DELETE FROM feedbacks WHERE id = :id')){
 		$stmt->bindParam(':id', $id);
 		$stmt->execute();
 		$db = null;
@@ -75,7 +74,7 @@ $app->get('/api/feedbacks/{id}/', function(Request $request, Response $response,
 	$response->getBody()->write($json);
 	return $response;
 });
-$app->get('/api/feedbacks/', function(Request $request, Response $response, $page){
+$app->get('/api/feedbacks/', function(Request $request, Response $response, array $args){
 	$page = $request->getQueryParams();
 	$json = json_encode(getAllFeedbacks((int)$page['page']));
 	$response = $response->withHeader('Content-type', 'application/json');
@@ -87,12 +86,10 @@ $app->get('/api/feedbacks/delete/{id}/', function(Request $request, Response $re
 	deleteFeedback((int)$id);
 	return $response;
 });
-$app->post('/api/feedbacks/add/', function(Request $request, Response $response, $json){
-	$json = $request->getParsedBody();
-	header("Content-Type: application/json");
-	//$html = var_export($json, true);
-	var_dump($json);
-	//addFeedback((string)$json['json']);
+$app->post('/api/feedbacks/add/', function(Request $request, Response $response, array $args){
+	$json = $request->getBody();
+	$json = json_decode($json, true);
+	addFeedback($json);
 	return $response;
 });
 $app->run();
