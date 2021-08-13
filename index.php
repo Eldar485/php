@@ -5,6 +5,17 @@ use Slim\Factory\AppFactory;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
+function valid(array $mass){
+	if(count($mass) != 0){
+		if(strlen($mass['text']) != 0 && ctype_alpha($mass['text']) && strlen($mass['date']) != 0 && preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/", $mass['date'])==true){
+			return true;
+		}
+	}
+	else{
+		 return false;
+	}
+}
+
 function getFeedback(int $id): ?array{
 	include_once('config.php');
 	$db = new PDO('sqlite:'.$bd_way);
@@ -38,18 +49,23 @@ function getAllFeedbacks(int $page): array{
 }
 
 function addFeedback(array $arr){
-	include_once('config.php');
-	$db = new PDO('sqlite:'.$bd_way);
-	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	if($stmt = $db->prepare('INSERT INTO feedbacks (text, date) VALUES (:text, :date)')){
-		$stmt->bindParam(':text', $arr['text']);
-		$stmt->bindParam(':date', $arr['date']);
-		$stmt->execute();
-		$db = null;
+	if(valid($arr) == true){
+		include_once('config.php');
+		$db = new PDO('sqlite:'.$bd_way);
+		$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		if($stmt = $db->prepare('INSERT INTO feedbacks (text, date) VALUES (:text, :date)')){
+			$stmt->bindParam(':text', $arr['text']);
+			$stmt->bindParam(':date', $arr['date']);
+			$stmt->execute();
+			$db = null;
+		}
+		else{
+			return null;
+		}
 	}
-	else{
+	else
 		return null;
-	}
+	
 }
 
 function deleteFeedback(int $id){
